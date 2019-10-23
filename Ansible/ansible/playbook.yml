@@ -1,5 +1,5 @@
 ---
-- name: My Playbook with veribles
+- name: My Playbook
   hosts: all
   become: yes
 
