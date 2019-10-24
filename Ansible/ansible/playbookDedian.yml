@@ -1,0 +1,38 @@
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+  become: yes
+
+  vars:
+   source_file: /home/ec2-user/index.html
+   destin_file: /var/www/html
+
+  tasks: 
+  - name: Check and print Linux Version
+    debug: var=ansible_os_family
+
+  - name: Install Apache Web Server for Ubuntu
+    apt: name=apache2 state=latest
+  - name: Copy MyHomePage to Server
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0755
+    notify: Restart Apache Dedian
+  - name: Start WebServer for Ubuntu
+    service: name=apache2 state=started enabled=yes
+    
+
+
+
+
+  handlers:
+  - name: Restart Apache Dedian
+    service: name=apache2 state=restarted
+
+
+
+
+
+
+
+
+
+

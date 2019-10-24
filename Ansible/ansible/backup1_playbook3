@@ -21,8 +21,8 @@
     when: ansible_os_family == "Debian"
 
   - name: Copy MyHomePage to Server
-    copy: src={{ source_file }} dest={{ destin_file }} mode=0755
-   #notify: Restart Apache
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0552
+    notify: Restart Apache
 
   - name: Start WebServer for RedHat  
     service: name=httpd state=started enabled=yes
