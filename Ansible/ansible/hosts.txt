@@ -1,10 +1,10 @@
 
 [staging_servers]
-linux1  ansible_host=172.31.47.106 owner=Vasya
+linux1  ansible_host=172.31.38.44    owner=Vasya
 
 
 [prod_servers]
-linux2  ansible_host=172.31.47.190   owner=Petya
+linux2  ansible_host=172.31.45.52   owner=Petya
 
 #[Ubuntu-Dedian_servers]
 #linux3  ansible_host=172.31.46.11
