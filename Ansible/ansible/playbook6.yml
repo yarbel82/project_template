@@ -1,0 +1,70 @@
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+  become: yes
+
+  vars:
+   source_folder: ./MyWebSite
+   destin_folder: /var/www/html
+
+  tasks: 
+  - name: Check and print Linux Version
+    debug: var=ansible_os_family
+
+
+  - block: # ==========Block for RedHat============
+    
+     - name: Install Apache Web Server for RedHat
+       yum: name=httpd state=latest  
+     - name: Start WebServer for RedHat
+       service: name=httpd state=started enabled=yes
+
+    when: ansible_os_family == "RedHat"
+
+
+  - block: # ==========Block for Dedian==============
+    
+     - name: Install Apache Web Server for Dedian
+       apt: name=apache2 state=latest
+     - name: Start WebServer for Ubuntu
+       service: name=apache2 state=started enabled=yes
+ 
+    when: ansible_os_family == "Dedian"
+
+
+
+  - name: Generate Index.html file
+    template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0755
+    notify:
+       - Restart Apache RedHat
+       - Restart Apache Dedian
+ 
+
+# - name: Copy MyHomePage to Server
+#    copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0755
+#    loop: 
+#       - "index.html"
+#    notify: 
+#       - Restart Apache RedHat
+#       - Restart Apache Dedian
+
+
+
+  handlers:
+  - name: Restart Apache RedHat
+    service: name=httpd state=restarted 
+    when: ansible_os_family == "RedHat"
+ 
+  - name: Restart Apache Dedian
+    service: name=apache2 state=restarted
+    when: ansible_os_family == "Dedian"
+
+
+
+
+
+
+
+
+
+

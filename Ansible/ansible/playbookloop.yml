@@ -1,0 +1,33 @@
+---
+- name: Loops Playbook
+  hosts: linux1
+  become: yes
+
+  tasks:
+  - name: Day Hello to All
+    debug: msg="Hello {{ item }}"
+    with_items:
+        - "Vasia"
+        - "Petia"
+        - "Masha"
+        - "Olya"
+
+
+  - name: Loop Until example
+    shell: echo -n Z >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2
+    retries: 10
+    until: output.stdout.find("ZZZ")== false
+
+  - name: Print Final Output
+    debug:
+      var: output.stdout
+
+
+  - name: Install Packaged
+    yum: name={{ item }} state=installed
+    with_items:
+          - python
+          - tree
+    #     - mysql-client
